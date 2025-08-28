@@ -23,8 +23,25 @@ This is the Phase 1 implementation of the trading application as outlined in the
 
 ## Installation
 
+### Option 1: Dev Container (Recommended)
+1. **Prerequisites**: Install [Docker](https://docker.com) and [VS Code](https://code.visualstudio.com) with [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+
+2. **Open in Dev Container**:
+   ```bash
+   # Clone and open in VS Code
+   git clone <your-repo>
+   code trading-app-2
+   # VS Code will prompt to "Reopen in Container" - click Yes
+   ```
+
+3. **Everything is pre-configured**: PostgreSQL, Redis, Python dependencies, and development tools are automatically set up!
+
+### Option 2: Local Installation
 1. **Install Dependencies**:
    ```bash
+   # Create virtual environment first
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
    pip install -r requirements.txt
    ```
 
@@ -101,6 +118,29 @@ trading_app/
 2. **Backtesting Engine**: Build comprehensive backtesting framework
 3. **Portfolio Management**: Position sizing and risk management
 4. **Order Management**: Order execution and tracking
+
+## Deployment to DigitalOcean
+
+### Quick Deployment
+```bash
+# Set your droplet IP
+export DROPLET_IP="your.droplet.ip.address"
+
+# Deploy with one command
+./deploy.sh production
+```
+
+### Manual Deployment Steps
+1. **Create DigitalOcean Droplet** with Docker pre-installed
+2. **Copy files**: `rsync -avz ./ root@droplet-ip:/opt/trading-app/`
+3. **Configure environment**: Edit `/opt/trading-app/.env` on droplet
+4. **Start services**: `docker-compose -f docker-compose.prod.yml up -d`
+
+### Production Features
+- **Automated backups**: Daily PostgreSQL backups with 7-day retention
+- **Health checks**: Container restart on failures
+- **Log rotation**: Prevents disk space issues
+- **Security**: Non-root containers and network isolation
 
 ## Monitoring
 
